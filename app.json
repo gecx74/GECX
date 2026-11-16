@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/edit/edit",
+    "pages/auth/auth",
+    "pages/alarm/alarm"
+  ],
+  "window": {
+    "navigationBarTitleText": "行程提醒",
+    "navigationBarBackgroundColor": "#F2F4FA",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F2F4FA",
+    "backgroundTextStyle": "dark"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

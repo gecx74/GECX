@@ -1,0 +1,9 @@
+{
+  "name": "sendReminder",
+  "version": "1.0.0",
+  "description": "行程提醒订阅消息下发：登记、取消、立即发送与每分钟扫描",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

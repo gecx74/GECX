@@ -1,0 +1,33 @@
+<view class="alarm fs-{{fontScale}} ff-{{fontStyle}}">
+    <view class="glow"></view>
+
+    <view class="alarm-top">
+        <text class="alarm-date">{{clockDate}}</text>
+        <text class="alarm-clock">{{clock}}</text>
+    </view>
+
+    <view class="bell {{ringing ? 'is-ringing' : ''}}">
+        <view class="bell-wave"></view>
+        <view class="bell-dot">⏰</view>
+    </view>
+
+    <text class="alarm-phase">{{phaseLabel}}</text>
+    <text class="alarm-detail">{{detail}}</text>
+
+    <view class="trip-card">
+        <text class="trip-title">{{payload.title}}</text>
+        <text class="trip-time">{{payload.dateText}} · {{payload.timeText}}</text>
+        <text class="trip-note" wx:if="{{payload.note}}">{{payload.note}}</text>
+        <text class="trip-extra" wx:if="{{extraText}}">{{extraText}}</text>
+    </view>
+
+    <text class="vibrate-hint">{{vibrateOn ? '振动提醒中' : '振动已关闭'}} · 稍后提醒默认 {{snoozeMinutes}} 分钟</text>
+
+    <view class="bottom">
+        <text class="link" bindtap="onOpenTrip">查看行程详情</text>
+        <view class="actions">
+            <view class="btn btn-ghost" bindtap="onSnooze" hover-class="btn-hover">{{snoozeText}}</view>
+            <view class="btn btn-primary" bindtap="onDismiss" hover-class="btn-hover">知道了</view>
+        </view>
+    </view>
+</view>

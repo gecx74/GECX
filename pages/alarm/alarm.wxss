@@ -1,0 +1,223 @@
+page {
+    background: #0B1220;
+    color: #F8FAFC;
+}
+
+.alarm {
+    position: relative;
+    min-height: 100vh;
+    padding: 72rpx 44rpx 60rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(180deg, #101B30 0%, #0B1220 55%, #090F1A 100%);
+    overflow: hidden;
+}
+
+.glow {
+    position: absolute;
+    top: -220rpx;
+    width: 760rpx;
+    height: 760rpx;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59, 110, 246, 0.34) 0%, rgba(59, 110, 246, 0) 68%);
+    pointer-events: none;
+}
+
+.alarm-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 26rpx;
+}
+
+.alarm-date {
+    font-size: calc(26rpx * var(--fs, 1));
+    color: rgba(226, 232, 240, 0.62);
+    letter-spacing: 1rpx;
+}
+
+.alarm-clock {
+    margin-top: 6rpx;
+    font-size: calc(112rpx * var(--fs, 1));
+    line-height: 1.05;
+    font-weight: 200;
+    letter-spacing: 2rpx;
+    color: #FFFFFF;
+    font-variant-numeric: tabular-nums;
+}
+
+/* 闹钟图标 + 震动波纹 */
+.bell {
+    position: relative;
+    width: 168rpx;
+    height: 168rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10rpx 0 8rpx;
+}
+
+.bell-dot {
+    width: 132rpx;
+    height: 132rpx;
+    border-radius: 50%;
+    background: linear-gradient(160deg, #3B6EF6 0%, #2B5CE6 100%);
+    box-shadow: 0 16rpx 40rpx rgba(43, 92, 230, 0.42);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 62rpx;
+}
+
+.bell-wave {
+    position: absolute;
+    width: 132rpx;
+    height: 132rpx;
+    border-radius: 50%;
+    border: 3rpx solid rgba(107, 150, 255, 0.55);
+    opacity: 0;
+}
+
+.bell.is-ringing .bell-dot {
+    animation: shake 0.7s ease-in-out infinite;
+}
+
+.bell.is-ringing .bell-wave {
+    animation: ripple 1.6s ease-out infinite;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(1);
+        opacity: 0.75;
+    }
+    100% {
+        transform: scale(1.72);
+        opacity: 0;
+    }
+}
+
+@keyframes shake {
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+    20% {
+        transform: rotate(-9deg);
+    }
+    45% {
+        transform: rotate(8deg);
+    }
+    70% {
+        transform: rotate(-5deg);
+    }
+}
+
+.alarm-phase {
+    font-size: calc(38rpx * var(--fs, 1));
+    font-weight: 700;
+    letter-spacing: 2rpx;
+    color: #FFFFFF;
+}
+
+.alarm-detail {
+    margin-top: 10rpx;
+    font-size: calc(27rpx * var(--fs, 1));
+    color: #8FB0FF;
+}
+
+.trip-card {
+    width: 100%;
+    margin-top: 34rpx;
+    padding: 30rpx 32rpx;
+    border-radius: 28rpx;
+    background: rgba(255, 255, 255, 0.07);
+    border: 2rpx solid rgba(148, 173, 226, 0.22);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.trip-title {
+    font-size: calc(40rpx * var(--fs, 1));
+    font-weight: 700;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 1.35;
+}
+
+.trip-time {
+    margin-top: 12rpx;
+    font-size: calc(26rpx * var(--fs, 1));
+    color: rgba(226, 232, 240, 0.72);
+}
+
+.trip-note {
+    margin-top: 14rpx;
+    font-size: calc(25rpx * var(--fs, 1));
+    color: rgba(203, 213, 225, 0.7);
+    text-align: center;
+}
+
+.trip-extra {
+    margin-top: 14rpx;
+    font-size: calc(24rpx * var(--fs, 1));
+    color: #8FB0FF;
+}
+
+.vibrate-hint {
+    margin-top: 26rpx;
+    font-size: calc(23rpx * var(--fs, 1));
+    color: rgba(203, 213, 225, 0.55);
+}
+
+.bottom {
+    width: 100%;
+    margin-top: auto;
+}
+
+.actions {
+    width: 100%;
+    padding-top: 30rpx;
+    display: flex;
+}
+
+.btn {
+    flex: 1;
+    height: 108rpx;
+    border-radius: 26rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(31rpx * var(--fs, 1));
+    font-weight: 600;
+}
+
+.btn + .btn {
+    margin-left: 24rpx;
+}
+
+.btn-ghost {
+    background: rgba(255, 255, 255, 0.1);
+    color: #E2E8F0;
+    border: 2rpx solid rgba(148, 173, 226, 0.28);
+}
+
+.btn-primary {
+    background: linear-gradient(160deg, #3B6EF6 0%, #2B5CE6 100%);
+    color: #FFFFFF;
+    box-shadow: 0 14rpx 32rpx rgba(43, 92, 230, 0.36);
+}
+
+.btn-hover {
+    opacity: 0.82;
+}
+
+.link {
+    display: block;
+    text-align: center;
+    padding: 12rpx 20rpx;
+    font-size: calc(26rpx * var(--fs, 1));
+    color: #8FB0FF;
+}

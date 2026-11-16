@@ -1,0 +1,32 @@
+{
+  "description": "行程提醒小程序：创建、编辑、删除行程，按日与周查看，分类筛选，到点提醒",
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "folder",
+        "value": ".workbuddy"
+      },
+      {
+        "type": "file",
+        "value": "manifest.json"
+      },
+      {
+        "type": "folder",
+        "value": "cloudfunctions"
+      }
+    ],
+    "include": []
+  },
+  "setting": {
+    "bundle": false,
+    "es6": true,
+    "minified": true,
+    "postcss": true,
+    "urlCheck": true
+  },
+  "compileType": "miniprogram",
+  "appid": "touristappid",
+  "projectname": "行程提醒",
+  "miniprogramRoot": "./",
+  "cloudfunctionRoot": "cloudfunctions/"
+}

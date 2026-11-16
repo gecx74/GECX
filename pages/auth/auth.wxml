@@ -1,0 +1,50 @@
+<view class="auth fs-{{fontScale}} ff-{{fontStyle}}">
+    <view class="auth-hero">
+        <view class="brand-mark">
+            <view class="brand-ring"></view>
+            <view class="brand-hand-hour"></view>
+            <view class="brand-hand-minute"></view>
+        </view>
+        <text class="auth-name">行程提醒</text>
+        <text class="auth-slogan">记录每个安排，到点提醒你</text>
+    </view>
+
+    <view class="auth-card">
+        <view class="tabs">
+            <view class="tab {{mode === 'login' ? 'is-active' : ''}}" data-mode="login" bindtap="switchMode">登录</view>
+            <view class="tab {{mode === 'register' ? 'is-active' : ''}}" data-mode="register" bindtap="switchMode">注册</view>
+        </view>
+
+        <view class="alert" wx:if="{{errorText}}">
+            <text class="alert-mark">!</text>
+            <text class="alert-text">{{errorText}}</text>
+        </view>
+
+        <view class="field">
+            <text class="field-label">账号</text>
+            <input class="field-input {{fieldName ? 'is-error' : ''}}" value="{{name}}" placeholder="3-20 位，中文/字母/数字/下划线" placeholder-class="ph" maxlength="20" bindinput="onNameInput" bindblur="onNameBlur" />
+            <text class="field-hint" wx:if="{{fieldName}}">{{fieldName}}</text>
+        </view>
+
+        <view class="field">
+            <text class="field-label">密码</text>
+            <input class="field-input {{fieldPwd ? 'is-error' : ''}}" password="{{true}}" value="{{password}}" placeholder="{{mode === 'register' ? '8-20 位，需含字母和数字' : '请输入密码'}}" placeholder-class="ph" maxlength="20" bindinput="onPasswordInput" bindblur="onPasswordBlur" />
+            <text class="field-hint" wx:if="{{fieldPwd}}">{{fieldPwd}}</text>
+        </view>
+
+        <view class="field" wx:if="{{mode === 'register'}}">
+            <text class="field-label">确认密码</text>
+            <input class="field-input {{fieldConfirm ? 'is-error' : ''}}" password="{{true}}" value="{{confirm}}" placeholder="再输入一次密码" placeholder-class="ph" maxlength="20" bindinput="onConfirmInput" bindblur="onConfirmBlur" />
+            <text class="field-hint" wx:if="{{fieldConfirm}}">{{fieldConfirm}}</text>
+        </view>
+
+        <button class="primary-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="submit">{{mode === 'register' ? '注册并登录' : '登录'}}</button>
+
+        <view class="switch-row">
+            <text class="switch-text">{{mode === 'register' ? '已有账号？' : '还没有账号？'}}</text>
+            <text class="switch-link" data-mode="{{mode === 'register' ? 'login' : 'register'}}" bindtap="switchMode">{{mode === 'register' ? '去登录' : '立即注册'}}</text>
+        </view>
+    </view>
+
+    <text class="auth-foot">账号与密码只保存在本机，不会上传服务器；忘记密码无法找回，请记牢</text>
+</view>

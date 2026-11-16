@@ -1,0 +1,218 @@
+<template name="tripItems">
+    <view class="trip-card {{dim ? 'is-dim' : ''}}" wx:for="{{items}}" wx:key="id" data-id="{{item.id}}" bindtap="openEdit" hover-class="trip-card-hover">
+        <view class="trip-bar" style="background: {{item.color}}"></view>
+        <view class="trip-check {{item.done ? 'is-done' : ''}}" data-id="{{item.id}}" catchtap="toggleDone">
+            <text class="trip-check-mark" wx:if="{{item.done}}">✓</text>
+        </view>
+        <view class="trip-main">
+            <view class="trip-line">
+                <text class="trip-title {{item.done ? 'is-done' : ''}}">{{item.title}}</text>
+                <text class="trip-time">{{item.timeText}}</text>
+            </view>
+            <view class="trip-meta">
+                <text class="trip-cat" style="color: {{item.color}}; background: {{item.bg}}">{{item.categoryLabel}}</text>
+                <text class="trip-remind">{{item.remindText}}</text>
+            </view>
+            <text class="trip-note" wx:if="{{item.noteText}}">{{item.noteText}}</text>
+        </view>
+    </view>
+</template>
+
+<view class="page fs-{{fontScale}} ff-{{fontStyle}}">
+    <view class="hero">
+    <view class="hero-top">
+        <text class="hero-eyebrow">{{heroEyebrow}}</text>
+        <view class="hero-entry-row">
+            <view class="font-entry" bindtap="openSettings" hover-class="font-entry-hover">
+                <view class="hero-avatar">{{userInitial}}</view>
+                <text class="font-entry-label">账号</text>
+            </view>
+            <view class="font-entry" bindtap="openSettings" hover-class="font-entry-hover">
+                <text class="font-entry-text">Aa</text>
+                <text class="font-entry-label">设置</text>
+            </view>
+        </view>
+    </view>
+        <text class="hero-title">{{heroTitle}}</text>
+        <view class="hero-hint-row">
+            <view class="hero-dot"></view>
+            <text class="hero-hint">{{heroHint}}</text>
+        </view>
+    </view>
+
+    <view class="missed-card" wx:if="{{missedText}}">
+        <view class="missed-main">
+            <text class="missed-title">锁屏期间错过的提醒</text>
+            <text class="missed-text">{{missedText}}</text>
+        </view>
+        <text class="missed-close" bindtap="dismissMissed">知道了</text>
+    </view>
+
+    <view class="segment">
+        <view class="segment-item {{viewMode === 'list' ? 'is-active' : ''}}" data-mode="list" bindtap="switchView">列表</view>
+        <view class="segment-item {{viewMode === 'calendar' ? 'is-active' : ''}}" data-mode="calendar" bindtap="switchView">日历</view>
+    </view>
+
+    <scroll-view class="filter-scroll" scroll-x="{{true}}" show-scrollbar="{{false}}" enhanced="{{true}}">
+        <view class="filter-track">
+            <view class="chip {{activeCategory === item.key ? 'is-active' : ''}}" wx:for="{{filters}}" wx:key="key" data-key="{{item.key}}" bindtap="switchCategory">
+                <view class="chip-dot" wx:if="{{item.key !== 'all'}}" style="background: {{item.color}}"></view>
+                <text>{{item.label}}</text>
+            </view>
+        </view>
+    </scroll-view>
+
+    <view class="error-card" wx:if="{{errorText}}">
+        <text class="error-text">{{errorText}}</text>
+        <view class="error-action" bindtap="handleRetry">重新加载</view>
+    </view>
+
+    <view class="loading-card" wx:elif="{{loading}}">
+        <view class="loading-spinner"></view>
+        <text class="loading-text">正在加载行程</text>
+    </view>
+
+    <block wx:else>
+        <block wx:if="{{viewMode === 'list'}}">
+            <view class="empty-card" wx:if="{{groups.length === 0}}">
+                <view class="empty-clock">
+                    <view class="empty-hand-hour"></view>
+                    <view class="empty-hand-minute"></view>
+                </view>
+                <text class="empty-title">{{emptyTitle}}</text>
+                <text class="empty-text">{{emptyText}}</text>
+            </view>
+
+            <view class="day-group" wx:for="{{groups}}" wx:key="key">
+                <view class="day-head">
+                    <text class="day-label">{{item.label}}</text>
+                    <text class="day-sub">{{item.sub}}</text>
+                    <text class="day-count">{{item.countText}}</text>
+                </view>
+                <template is="tripItems" data="{{items: item.items, dim: false}}" />
+            </view>
+
+            <view class="past-toggle" wx:if="{{pastCount > 0}}" bindtap="togglePast">{{pastToggleText}}</view>
+
+            <block wx:if="{{showPast}}">
+                <view class="day-group" wx:for="{{pastGroups}}" wx:key="key">
+                    <view class="day-head">
+                        <text class="day-label day-label-muted">{{item.label}}</text>
+                        <text class="day-sub">{{item.sub}}</text>
+                        <text class="day-count">{{item.countText}}</text>
+                    </view>
+                    <template is="tripItems" data="{{items: item.items, dim: true}}" />
+                </view>
+            </block>
+        </block>
+
+        <block wx:else>
+            <view class="cal-card">
+                <view class="cal-head">
+                    <view class="cal-move">
+                        <view class="cal-nav" data-dir="-1" bindtap="shiftCalendar">‹</view>
+                        <text class="cal-title">{{calendarTitle}}</text>
+                        <view class="cal-nav" data-dir="1" bindtap="shiftCalendar">›</view>
+                    </view>
+                    <view class="cal-mode">
+                        <view class="cal-mode-item {{calMode === 'week' ? 'is-active' : ''}}" data-mode="week" bindtap="switchCalMode">周</view>
+                        <view class="cal-mode-item {{calMode === 'month' ? 'is-active' : ''}}" data-mode="month" bindtap="switchCalMode">月</view>
+                    </view>
+                </view>
+                <view class="cal-week-row">
+                    <text class="cal-week-cell" wx:for="{{weekdays}}" wx:key="*this">{{item}}</text>
+                </view>
+                <view class="cal-week" wx:for="{{weeks}}" wx:for-item="week" wx:key="key">
+                    <view class="cal-cell {{cell.className}}" wx:for="{{week.cells}}" wx:for-item="cell" wx:key="key" data-key="{{cell.key}}" bindtap="selectDate">
+                        <view class="cal-day">{{cell.day}}</view>
+                        <view class="cal-dot" wx:if="{{cell.dot}}"></view>
+                    </view>
+                </view>
+                <text class="cal-tip">带圆点的日期有安排</text>
+            </view>
+
+            <view class="selected-head">
+                <text class="selected-title">{{selectedLabel}}</text>
+                <text class="selected-meta">{{selectedMeta}}</text>
+            </view>
+
+            <view class="empty-card empty-card-small" wx:if="{{selectedEmpty}}">
+                <text class="empty-title">这一天还没有安排</text>
+                <text class="empty-text">点击右下角的 + ，为这一天添加行程</text>
+            </view>
+            <block wx:else>
+                <template is="tripItems" data="{{items: selectedItems, dim: false}}" />
+            </block>
+        </block>
+    </block>
+
+    <view class="fab" bindtap="createTrip" hover-class="fab-hover">
+        <text class="fab-plus">+</text>
+    </view>
+</view>
+
+<view class="sheet-mask" wx:if="{{settingsOpen}}" bindtap="closeSettings" catchtouchmove="noop"></view>
+<view class="sheet fs-{{fontScale}} ff-{{fontStyle}}" wx:if="{{settingsOpen}}">
+    <view class="sheet-head">
+        <text class="sheet-title">显示与账号</text>
+        <text class="sheet-close" bindtap="closeSettings">完成</text>
+    </view>
+
+    <!-- 账号管理：固定在面板顶部、不随内容滚动，保证「退出登录」入口始终可见可点 -->
+    <view class="account-box">
+        <view class="account-row">
+            <view class="account-avatar">{{userInitial}}</view>
+            <view class="account-info">
+                <text class="account-name">{{userName}}</text>
+                <text class="account-sub">当前登录账号</text>
+            </view>
+        </view>
+        <view class="account-logout {{logoutConfirming ? 'is-confirming' : ''}}" catchtap="logout" hover-class="account-logout-hover">
+            <text class="account-logout-text">{{logoutConfirming ? '再次点击，确认退出登录' : '退出登录'}}</text>
+            <text class="account-logout-arrow" wx:if="{{!logoutConfirming}}">›</text>
+        </view>
+    </view>
+
+    <scroll-view class="sheet-body" scroll-y="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <text class="sheet-tip">点一下立即生效，之后打开小程序会记住这个选择</text>
+        <text class="sheet-row-label">字号大小</text>
+        <view class="opt-row">
+            <view class="opt-chip {{fontScale === item.key ? 'is-active' : ''}}" wx:for="{{fontOptions}}" wx:key="key" data-key="{{item.key}}" bindtap="selectFontScale">{{item.label}}</view>
+        </view>
+        <text class="sheet-row-label">字体风格</text>
+        <view class="opt-row">
+            <view class="opt-chip {{fontStyle === item.key ? 'is-active' : ''}}" wx:for="{{styleOptions}}" wx:key="key" data-key="{{item.key}}" bindtap="selectFontStyle">{{item.label}}</view>
+        </view>
+
+        <text class="sheet-row-label">提醒方式</text>
+        <view class="switch-row">
+            <view class="switch-info">
+                <text class="switch-title">振动提醒（默认开启）</text>
+                <text class="switch-sub">闹钟响起时手机会连续振动，直到你处理</text>
+            </view>
+            <switch checked="{{alarmVibrate}}" color="#2B5CE6" bindchange="toggleVibrate" />
+        </view>
+
+        <text class="sheet-row-label">云同步</text>
+        <view class="cloud-card">
+            <view class="cloud-head">
+                <view class="cloud-dot {{cloudOn ? 'is-on' : ''}}"></view>
+                <text class="cloud-title">{{cloudOn ? '已开启 · ' + cloudUser : '未开启'}}</text>
+                <text class="cloud-badge" wx:if="{{cloudBusy}}">同步中…</text>
+            </view>
+            <text class="cloud-sub">{{cloudTip}}</text>
+            <view class="cloud-actions">
+                <view class="cloud-btn" wx:if="{{!cloudOn}}" bindtap="cloudLogin">微信登录开启云同步</view>
+                <block wx:else>
+                    <view class="cloud-btn" bindtap="syncNow">立即同步</view>
+                    <view class="cloud-btn cloud-btn-ghost" bindtap="cloudLogout">退出云账号</view>
+                </block>
+            </view>
+        </view>
+
+        <text class="cal-note">手机日历的同步在「新建 / 编辑行程」页设置，保存行程时一并写入</text>
+    </scroll-view>
+
+    <view class="sheet-safe"></view>
+</view>
+

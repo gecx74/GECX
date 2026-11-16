@@ -1,0 +1,140 @@
+<view class="page fs-{{fontScale}} ff-{{fontStyle}}">
+    <view class="error-banner" wx:if="{{errorText}}">
+        <text class="error-mark">!</text>
+        <text class="error-msg">{{errorText}}</text>
+    </view>
+
+    <view class="card">
+        <text class="card-label">行程标题</text>
+        <view class="title-row">
+            <input class="title-input" value="{{title}}" placeholder="例如：产品评审会" placeholder-class="input-placeholder" maxlength="40" bindinput="onTitleInput" />
+            <view class="title-pick" bindtap="openTitleSheet" hover-class="title-pick-hover">
+                <text class="title-pick-text">点选</text>
+            </view>
+        </view>
+        <text class="title-hint">点「点选」可直接从常用标题里选，也可以自己输入</text>
+
+        <view class="divider"></view>
+
+        <text class="card-label">识别填充</text>
+        <view class="scan-row">
+            <view class="scan-btn scan-btn-main" bindtap="scanImage" hover-class="scan-btn-hover">
+                <text class="scan-btn-text">扫描截图</text>
+            </view>
+            <view class="scan-btn" bindtap="parseFromText" hover-class="scan-btn-hover">
+                <text class="scan-btn-text">提取填充</text>
+            </view>
+        </view>
+        <view class="scan-shot" wx:if="{{scanImagePath}}">
+            <image class="scan-shot-img" src="{{scanImagePath}}" mode="aspectFill" show-menu-by-longpress="{{true}}" bindtap="previewScanImage" />
+            <view class="scan-shot-body">
+                <text class="scan-shot-title">长按截图 → 提取文字 → 复制</text>
+                <text class="scan-shot-tip">复制后点「提取填充」自动填表；点图片可放大查看</text>
+            </view>
+        </view>
+        <textarea class="scan-input" value="{{scanText}}" placeholder="粘贴通知、日程截图里的文字，或简单描述行程，如：明天下午3点 在总部会议室 开周例会" placeholder-class="input-placeholder" maxlength="500" bindinput="onScanInput" auto-height />
+        <text class="scan-hint">扫描截图后长按图片选「提取文字」并复制，点「提取填充」自动填到标题、日期、时间等字段，填完还能改；识别失败时可直接在下方手动填写</text>
+
+        <view class="voice-bar" wx:if="{{voiceEnabled}}" bindtap="toggleVoice" hover-class="voice-bar-hover">
+            <view class="mic-btn {{voiceState === 'recording' ? 'is-recording' : ''}}">
+                <view class="mic-icon"></view>
+            </view>
+            <view class="voice-text">
+                <text class="voice-status {{voiceState === 'recording' ? 'is-recording' : ''}}">{{voiceState === 'recording' ? '正在聆听，说完点这里停止' : '点我语音输入行程'}}</text>
+                <text class="voice-partial" wx:if="{{voicePartial}}">{{voicePartial}}</text>
+            </view>
+        </view>
+
+        <view class="divider"></view>
+
+        <text class="card-label">分类</text>
+        <view class="cat-row">
+            <view class="cat-item {{category === item.key ? 'is-active' : ''}}" wx:for="{{categories}}" wx:key="key" data-key="{{item.key}}" bindtap="selectCategory" style="{{category === item.key ? 'border-color:' + item.color + ';background:' + item.bg + ';color:' + item.color : ''}}">
+                <view class="cat-dot" style="background: {{item.color}}"></view>
+                <text class="cat-text">{{item.label}}</text>
+            </view>
+        </view>
+
+        <view class="divider"></view>
+
+        <view class="row">
+            <picker class="row-half" mode="multiSelector" range="{{dateRanges}}" value="{{dateIndexes}}" bindcolumnchange="onDateColumnChange" bindchange="onDateChange">
+                <view class="picker-cell">
+                    <text class="cell-label">日期</text>
+                    <view class="cell-value-row">
+                        <text class="cell-value">{{dateLabel}}</text>
+                        <text class="arrow">›</text>
+                    </view>
+                    <text class="cell-sub">{{dateWeekday}}</text>
+                </view>
+            </picker>
+            <view class="row-gap"></view>
+            <picker class="row-half" mode="time" value="{{time}}" bindchange="onTimeChange">
+                <view class="picker-cell">
+                    <text class="cell-label">时间</text>
+                    <view class="cell-value-row">
+                        <text class="cell-value">{{time}}</text>
+                        <text class="arrow">›</text>
+                    </view>
+                    <text class="cell-sub">{{timeHint}}</text>
+                </view>
+            </picker>
+        </view>
+
+        <view class="divider"></view>
+
+        <text class="card-label">提前提醒</text>
+        <view class="opt-row">
+            <view class="opt-chip {{remindIndex === index ? 'is-active' : ''}}" wx:for="{{remindLabels}}" wx:key="*this" data-index="{{index}}" bindtap="selectRemind">{{item}}</view>
+        </view>
+
+        <text class="card-label note-label">补充说明</text>
+        <textarea class="note-input" value="{{note}}" placeholder="补充地点、联系人等信息（选填）" placeholder-class="input-placeholder" maxlength="200" bindinput="onNoteInput" auto-height />
+    </view>
+
+    <view class="preview-card">
+        <view class="preview-dot" style="background: {{categoryColor}}"></view>
+        <view class="preview-main">
+            <text class="preview-title">{{previewText}}</text>
+            <text class="preview-sub">{{previewSub}}</text>
+        </view>
+    </view>
+
+    <view class="actions">
+        <button class="save-btn" bindtap="save" loading="{{saving}}" disabled="{{saving}}">{{saving ? '保存中…' : '保存行程'}}</button>
+        <view class="delete-btn" wx:if="{{isEdit}}" bindtap="removeTrip">删除这个行程</view>
+    </view>
+
+    <text class="footnote">提醒在小程序打开或切回前台时触发，完全关闭小程序后不会推送</text>
+</view>
+
+<view class="sheet-mask" wx:if="{{titleSheetOpen}}" bindtap="closeTitleSheet" catchtouchmove="noop"></view>
+<view class="sheet fs-{{fontScale}} ff-{{fontStyle}}" wx:if="{{titleSheetOpen}}">
+    <view class="sheet-head">
+        <text class="sheet-title">选择行程标题</text>
+        <text class="sheet-close" bindtap="closeTitleSheet">关闭</text>
+    </view>
+    <text class="sheet-tip">共 {{titleOptions.length}} 项（含 {{customCount}} 项自定义），点一下即填入标题，之后还能改</text>
+    <view class="custom-bar">
+        <view class="custom-add" wx:if="{{!customInputOpen}}" bindtap="openCustomInput" hover-class="custom-add-hover">
+            <text class="custom-add-plus">＋</text>
+            <text class="custom-add-text">自定义</text>
+        </view>
+        <view class="custom-editor" wx:else>
+            <input class="custom-input" value="{{customDraft}}" focus placeholder="输入自定义标题，如：周例会" placeholder-class="input-placeholder" maxlength="40" bindinput="onCustomInput" bindconfirm="confirmCustom" />
+            <view class="custom-ok" bindtap="confirmCustom" hover-class="custom-ok-hover">添加</view>
+            <view class="custom-cancel" bindtap="cancelCustom">取消</view>
+        </view>
+    </view>
+    <scroll-view class="sheet-scroll" scroll-y="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-list">
+            <view class="sheet-option {{title === item.text ? 'is-active' : ''}}" wx:for="{{titleOptions}}" wx:key="text" data-value="{{item.text}}" bindtap="selectTitleOption">
+                <text class="sheet-option-text">{{item.text}}</text>
+                <text class="sheet-option-tag" wx:if="{{item.custom}}">自定义</text>
+                <text class="sheet-option-check" wx:if="{{title === item.text}}">✓</text>
+                <text class="sheet-option-del" wx:if="{{item.custom}}" data-value="{{item.text}}" catchtap="removeCustomOption">✕</text>
+            </view>
+        </view>
+    </scroll-view>
+    <view class="sheet-safe"></view>
+</view>
