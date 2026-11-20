@@ -56,10 +56,6 @@
     letter-spacing: 1rpx;
 }
 
-.card-label-inline {
-    display: inline-block;
-}
-
 .title-row {
     display: flex;
     align-items: center;
@@ -326,13 +322,6 @@
     font-size: 30rpx;
     font-size: calc(30rpx * var(--fs, 1));
     line-height: 1;
-}
-
-.row-between {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 4rpx 0;
 }
 
 /* ---------- 备注 ---------- */

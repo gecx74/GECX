@@ -204,33 +204,6 @@ button::after {
     font-weight: 700;
 }
 
-.sheet-preview {
-    display: flex;
-    flex-direction: column;
-    margin-top: 18rpx;
-    padding: 24rpx 26rpx;
-    border: 2rpx solid #E3E9FA;
-    border-radius: 22rpx;
-    background: linear-gradient(135deg, #F6F8FF 0%, #F1F3FF 60%, #F7F3FF 100%);
-    box-shadow: 0 10rpx 24rpx rgba(86, 102, 255, 0.08);
-}
-
-.sheet-preview-title {
-    color: #3546C9;
-    font-size: 30rpx;
-    font-size: calc(30rpx * var(--fs, 1));
-    font-weight: 600;
-    line-height: 1.4;
-}
-
-.sheet-preview-sub {
-    margin-top: 8rpx;
-    color: #7C86A8;
-    font-size: 24rpx;
-    font-size: calc(24rpx * var(--fs, 1));
-    line-height: 1.4;
-}
-
 /* ---------- 设置面板：提醒方式开关 ---------- */
 .switch-row {
     display: flex;
@@ -279,98 +252,6 @@ button::after {
     font-size: 22rpx;
     font-size: calc(22rpx * var(--fs, 1));
     line-height: 1.5;
-}
-
-/* ---------- 提醒可靠性卡片 ---------- */
-.push-card {
-    margin-top: 14rpx;
-    padding: 22rpx 24rpx 20rpx;
-    border: 2rpx solid #E3E9FA;
-    border-radius: 22rpx;
-    background: #FCFDFF;
-}
-
-.push-line {
-    display: flex;
-    align-items: flex-start;
-    padding: 8rpx 0;
-}
-
-.push-dot {
-    width: 14rpx;
-    height: 14rpx;
-    border-radius: 50%;
-    margin: 12rpx 14rpx 0 0;
-    flex-shrink: 0;
-}
-
-.push-dot-on {
-    background: #1FA971;
-}
-
-.push-dot-off {
-    background: #C6CCDA;
-}
-
-.push-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.push-title {
-    color: #16191F;
-    font-size: 26rpx;
-    font-size: calc(26rpx * var(--fs, 1));
-    font-weight: 600;
-    line-height: 1.4;
-}
-
-.push-sub {
-    margin-top: 4rpx;
-    color: #7C86A8;
-    font-size: 22rpx;
-    font-size: calc(22rpx * var(--fs, 1));
-    line-height: 1.45;
-}
-
-.push-actions {
-    display: flex;
-    margin-top: 16rpx;
-}
-
-.push-btn {
-    flex: 1;
-    height: 68rpx;
-    border-radius: 18rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #2B5CE6;
-    color: #FFFFFF;
-    font-size: 25rpx;
-    font-size: calc(25rpx * var(--fs, 1));
-    font-weight: 600;
-}
-
-.push-btn-ghost {
-    margin-left: 16rpx;
-    background: #F1F4FB;
-    color: #3546C9;
-    border: 2rpx solid #DCE3F6;
-}
-
-.push-btn-hover {
-    opacity: 0.85;
-}
-
-.push-test {
-    display: block;
-    margin-top: 14rpx;
-    text-align: center;
-    color: #4F63FF;
-    font-size: 23rpx;
-    font-size: calc(23rpx * var(--fs, 1));
 }
 
 /* ---------- 锁屏错过提醒提示条 ---------- */

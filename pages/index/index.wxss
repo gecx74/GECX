@@ -598,6 +598,35 @@
     box-shadow: 0 4rpx 10rpx rgba(16, 24, 40, 0.1);
 }
 
+/* 「今天」：从任意月份/周一键回到今天 */
+.cal-today {
+    display: flex;
+    height: 52rpx;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    margin-left: 12rpx;
+    padding: 0 18rpx;
+    border: 2rpx solid #DCE3F6;
+    border-radius: 999rpx;
+    background: #ffffff;
+    color: #4F63FF;
+    font-size: 22rpx;
+    font-size: calc(22rpx * var(--fs, 1));
+    line-height: 1;
+}
+
+.cal-today.is-current {
+    border-color: #C7D2FF;
+    background: #EEF2FF;
+    color: #3B4BFF;
+    font-weight: 600;
+}
+
+.cal-today-hover {
+    background: #F3F6FF;
+}
+
 .cal-week-row {
     display: flex;
     padding: 10rpx 0 4rpx;

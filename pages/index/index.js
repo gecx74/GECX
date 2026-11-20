@@ -52,6 +52,7 @@ Page({
         cloudBusy: false,
         userName: '',
         userInitial: '',
+        isToday: true,
     },
 
     onLoad() {
@@ -242,6 +243,21 @@ Page({
         const selectedDate = dateUtil.parseKey(selectedKey);
         const title = dateUtil.dayTitle(selectedDate);
 
+        // 「今天」按钮的回显：当前浏览的周/月是否已经包含今天
+        const todayKey = dateUtil.toKey(new Date());
+        const todayDate = dateUtil.parseKey(todayKey);
+        let containsToday = false;
+        if (this.data.calMode === 'week') {
+            const weekBase = dateUtil.parseKey(selectedKey);
+            const weekStart = dateUtil.addDays(weekBase, -dateUtil.mondayIndex(weekBase));
+            const weekEnd = dateUtil.addDays(weekStart, 6);
+            containsToday = todayKey >= dateUtil.toKey(weekStart) && todayKey <= dateUtil.toKey(weekEnd);
+        } else {
+            const monthAnchor = dateUtil.parseKey(this.anchorKey);
+            containsToday =
+                monthAnchor.getFullYear() === todayDate.getFullYear() && monthAnchor.getMonth() === todayDate.getMonth();
+        }
+
         this.setData({
             weeks: weeks,
             calendarTitle: calendarTitle,
@@ -249,6 +265,7 @@ Page({
             selectedMeta: selectedItems.length ? selectedItems.length + ' 个安排' : '暂无安排',
             selectedItems: selectedItems,
             selectedEmpty: selectedItems.length === 0,
+            isToday: containsToday && selectedKey === todayKey,
         });
     },
 

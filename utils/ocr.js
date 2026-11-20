@@ -11,7 +11,9 @@ function pickScreenshot() {
         wx.chooseMedia({
             count: 1,
             mediaType: ['image'],
-            sourceType: ['album', 'camera'],
+            // 只从相册取图：与隐私清单「Album（选择通知截图）」保持一致。
+            // 若放开 camera，需同时在公众平台补充「摄像头」声明，否则正式版会隐私校验失败。
+            sourceType: ['album'],
             success: (res) => {
                 const file = res.tempFiles && res.tempFiles[0];
                 if (!file || !file.tempFilePath) {

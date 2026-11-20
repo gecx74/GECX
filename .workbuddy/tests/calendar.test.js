@@ -74,7 +74,14 @@ function resetWritten() {
 }
 
 async function main() {
-    const startTime = new Date(2026, 10, 17, 15, 0).getTime();
+    // 夹具必须相对当前时间：写死日期会随系统时间过期，提醒时刻已过的行程会被守卫拦下
+    const futureAt15 = (daysAhead) => {
+        const d = new Date();
+        d.setDate(d.getDate() + daysAhead);
+        d.setHours(15, 0, 0, 0);
+        return d.getTime();
+    };
+    const startTime = futureAt15(2);
     const event = calendar.buildEvent({
         title: '总部会议',
         startTime: startTime,
@@ -118,6 +125,11 @@ async function main() {
 
     result = await calendar.addTrip(null);
     check('缺参数返回 INVALID_PAYLOAD', result.ok === false && result.reason === 'INVALID_PAYLOAD', result);
+
+    // 提醒时刻已过的行程不写入（如「提前 1 天」但行程就在 1 小时内）
+    resetWritten();
+    result = await calendar.addTrip({ title: '过期提醒', startTime: Date.now() + 3600000, remindBefore: 1440 });
+    check('提醒时刻已过返回 REMIND_PASSED', result.ok === false && result.reason === 'REMIND_PASSED', result);
 
     calendarReply = 'privacy';
     result = await calendar.addTrip({ title: '总部会议', startTime: startTime, remindBefore: 10 });

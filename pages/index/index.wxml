@@ -118,6 +118,7 @@
                         <view class="cal-mode-item {{calMode === 'week' ? 'is-active' : ''}}" data-mode="week" bindtap="switchCalMode">周</view>
                         <view class="cal-mode-item {{calMode === 'month' ? 'is-active' : ''}}" data-mode="month" bindtap="switchCalMode">月</view>
                     </view>
+                    <view class="cal-today {{isToday ? 'is-current' : ''}}" bindtap="goToday" hover-class="cal-today-hover">今天</view>
                 </view>
                 <view class="cal-week-row">
                     <text class="cal-week-cell" wx:for="{{weekdays}}" wx:key="*this">{{item}}</text>
