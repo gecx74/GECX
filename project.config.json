@@ -11,6 +11,10 @@
         "value": "manifest.json"
       },
       {
+        "type": "file",
+        "value": "CHANGELOG.md"
+      },
+      {
         "type": "folder",
         "value": "cloudfunctions"
       }
